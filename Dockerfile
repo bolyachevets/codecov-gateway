@@ -1,5 +1,6 @@
 # syntax=docker/dockerfile:1.6
 FROM haproxytech/haproxy-alpine:2.9
+
 RUN apk update --no-cache && apk upgrade --no-cache openssl && apk add --no-cache gettext
 RUN mkdir -p /etc/codecov/ssl/certs && chown haproxy:haproxy /etc/codecov/ssl/certs && chown haproxy:haproxy /etc/haproxy
 COPY --chown=haproxy:haproxy --chmod=644 config/0-haproxy.conf /etc/haproxy/0-haproxy.conf.template
@@ -37,6 +38,6 @@ ENV BUILD_VERSION $VERSION
 EXPOSE 8080
 EXPOSE 8443
 
-RUN chown -R haproxy:haproxy /var/lib/haproxy && mkdir -p /run && chown -R haproxy:haproxy /etc/haproxy && chown -R haproxy:haproxy /run
+RUN chmod -R 777 /var/lib/haproxy && mkdir -p /run && chmod -R 777 /etc/haproxy && chmod -R 777 /run
 
 ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
